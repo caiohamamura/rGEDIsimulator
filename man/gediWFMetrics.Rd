@@ -325,8 +325,8 @@ if (libsAvailable) {
   outdir <- tempdir()
 
   # Specifying the path to ALS data (zip)
-  alsfile_Amazon_zip <- system.file("extdata", "Amazon.zip", package = "rGEDI")
-  alsfile_Savanna_zip <- system.file("extdata", "Savanna.zip", package = "rGEDI")
+  alsfile_Amazon_zip <- system.file("extdata", "Amazon.zip", package = "rGEDI.simulator")
+  alsfile_Savanna_zip <- system.file("extdata", "Savanna.zip", package = "rGEDI.simulator")
 
   # Unzipping ALS data
   alsfile_Amazon_filepath <- unzip(alsfile_Amazon_zip, exdir = outdir)
