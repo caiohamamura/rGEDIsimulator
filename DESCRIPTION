@@ -25,7 +25,8 @@ Depends:
   rGEDI
 Imports:
   fs,
-  hdf5r
+  hdf5r,
+  utils
 Suggests:
   lidR,
   plot3D

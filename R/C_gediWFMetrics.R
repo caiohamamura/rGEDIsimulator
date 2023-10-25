@@ -517,10 +517,10 @@ gediWFMetrics <- function(
 
   if (res == 0) {
     output <- fs::path_ext_set(outRoot, ".metric.txt")
-    header <- read.csv(output, sep = ",", nrow = 1, header = FALSE, as.is = TRUE)
+    header <- utils::read.csv(output, sep = ",", nrow = 1, header = FALSE, as.is = TRUE)
     header <- gsub("#? *\\d+ *([^,]*)", "\\1", header)
     header <- header[header != "NA"]
-    metricData <- read.csv(output, sep = " ", skip = 1, na.strings = "?", header = FALSE)
+    metricData <- utils::read.csv(output, sep = " ", skip = 1, na.strings = "?", header = FALSE)
     if (ncol(metricData) == length(header)) {
       names(metricData) <- header
     } else {

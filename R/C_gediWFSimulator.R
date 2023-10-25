@@ -305,7 +305,7 @@ gediWFSimulator <- function(
 
     cleanInList(inputInList)
     if (ascii == TRUE) {
-        result <- read.table(output)
+        result <- utils::read.table(output)
         metadata <- strsplit(readLines(output)[2:7], split = " ")
         final <- list()
         if (ncol(result) == 10) {
