@@ -1,0 +1,43 @@
+Package: rGEDI.simulator
+Type: Package
+Title: NASA's Global Ecosystem Dynamics Investigation (GEDI) Simulator for ALS Data
+Version: 0.1.0
+Authors@R: c(
+    person("Caio", "Hamamura", email = "caiohamamura@gmail.com", role = c("aut", "cph", "cre")),
+    person("Carlos Alberto", "Silva", email = "carlos_engflorestal@outlook.com", role = c("aut", "cph")),
+    person("Ruben", "Valbuena", email = "r.valbuena@bangor.ac.uk", role = c("aut","ctb")),
+    person("Steven", "Hancock", email = "steven.hancock@ed.ac.uk", role = c("aut","ctb")),
+    person("Adrian", "Cardil", email = "adriancardil@gmail.com", role = c("aut","ctb")),
+    person("Eben North", "Broadbent", email = "eben@ufl.edu", role = c("aut","ctb")),
+    person("Danilo Roberti Alves de", "Almeida", email = "daniloflorestas@gmail.com", role = c("aut","ctb")),
+    person("Celso H. L.", "Silva Junior", email = "celso.junior@inpe.br", role = c("aut","ctb")),
+    person("Carine", "Klauberg", email = "carine_klauberg@hotmail.com", role = c("aut","ctb")),
+    person("Burton", "Garbow", email = "", role = ("cph"), comment = "Is the author of the MINPACK-1 Least Squares Fitting Library"),
+    person("Kenneth", "Hillstrom", email = "", role = ("cph"), comment = "Is the author of the MINPACK-1 Least Squares Fitting Library"),
+    person("Jorge", "More", email = "", role = ("cph"), comment = "Is the author of the MINPACK-1 Least Squares Fitting Library"),
+    person("Craig", "Markwardt", email = "", role = ("cph"), comment = "Is the author of the enhanced MINPACK-1 Least Squares Fitting Library"))
+Description: Simulates the fullwaveform GEDI data and calculates metrics based on aerial lidar systems data.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Depends: 
+  methods,
+  rGEDI
+Imports:
+  fs,
+  hdf5r
+Suggests:
+  lidR,
+  plot3D
+SystemRequirements: 
+  GNU Scientific Library (>= 2.1),
+  HDF5 (>= 1.8.13),
+  libgeotiff (>= 1.4.0),
+  szip (>= 2.1),
+  zlib (>= 1.2)
+NeedsCompilation: yes
+RoxygenNote: 7.2.3
+Roxygen: list(markdown = TRUE)
+BugReports: https://github.com/caiohamamura/rGEDI.simulator/issues
+URL: https://github.com/caiohamamura/rGEDI.simulator
+Copyright: inst/COPYRIGHTS
