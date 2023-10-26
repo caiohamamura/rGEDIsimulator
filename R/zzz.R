@@ -1,4 +1,4 @@
 .onUnload <- function(libpath) {
-  library.dynam.unload("rGEDI.simulator", libpath)
+  library.dynam.unload("rGEDIsimulator", libpath)
   invisible()
 }

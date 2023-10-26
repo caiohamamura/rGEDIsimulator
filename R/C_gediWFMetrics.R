@@ -197,8 +197,8 @@
 #'   outdir <- tempdir()
 #'
 #'   # Specifying the path to ALS data (zip)
-#'   alsfile_Amazon_zip <- system.file("extdata", "Amazon.zip", package = "rGEDI.simulator")
-#'   alsfile_Savanna_zip <- system.file("extdata", "Savanna.zip", package = "rGEDI.simulator")
+#'   alsfile_Amazon_zip <- system.file("extdata", "Amazon.zip", package = "rGEDIsimulator")
+#'   alsfile_Savanna_zip <- system.file("extdata", "Savanna.zip", package = "rGEDIsimulator")
 #'
 #'   # Unzipping ALS data
 #'   alsfile_Amazon_filepath <- unzip(alsfile_Amazon_zip, exdir = outdir)
@@ -261,7 +261,7 @@
 #'   rownames(metrics_noise) <- c("Amazon", "Savanna")
 #'   head(metrics_noise)
 #' }
-#' @useDynLib rGEDI.simulator
+#' @useDynLib rGEDIsimulator
 #' @import methods fs rGEDI hdf5r
 #' @export
 gediWFMetrics <- function(

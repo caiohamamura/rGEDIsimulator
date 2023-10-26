@@ -1,4 +1,4 @@
-#' rGEDI.simulator: A NASA's Global Ecosystem Dynamics Investigation (GEDI) simulator using ALS dataset.
+#' rGEDIsimulator: A NASA's Global Ecosystem Dynamics Investigation (GEDI) simulator using ALS dataset.
 #' @description
 #' The rGEDI package provides functions for i) downloading, ii) visualizing, iii) clipping, iv) gridding, iv) simulating and v) exporting GEDI data.
 #'
@@ -11,5 +11,5 @@
 #' For comprehensive examples refer to \url{https://github.com/carlos-alberto-silva/rGEDI/blob/master/README.md}
 #'
 #' @docType package
-#' @name rGEDI.simulator-package
+#' @name rGEDIsimulator-package
 NULL

@@ -1,12 +1,12 @@
 unloadLibrary <- function() {
   if (isLibraryLoaded()) {
-    unloadNamespace("rGEDI.simulator")
+    unloadNamespace("rGEDIsimulator")
   }
-  require("rGEDI.simulator", quietly = T)
+  require("rGEDIsimulator", quietly = T)
   invisible()
 }
 
 
 isLibraryLoaded <- function() {
-  is.loaded("C_gediSimulator", "rGEDI.simulator")
+  is.loaded("C_gediSimulator", "rGEDIsimulator")
 }

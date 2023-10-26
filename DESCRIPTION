@@ -1,4 +1,4 @@
-Package: rGEDI.simulator
+Package: rGEDIsimulator
 Type: Package
 Title: NASA's Global Ecosystem Dynamics Investigation (GEDI) Simulator for ALS Data
 Version: 0.1.0
@@ -39,6 +39,6 @@ SystemRequirements:
 NeedsCompilation: yes
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
-BugReports: https://github.com/caiohamamura/rGEDI.simulator/issues
-URL: https://github.com/caiohamamura/rGEDI.simulator
+BugReports: https://github.com/caiohamamura/rGEDIsimulator/issues
+URL: https://github.com/caiohamamura/rGEDIsimulator
 Copyright: inst/COPYRIGHTS
