@@ -10,7 +10,7 @@ LIBGEDISIMULATOR=libgedisimulator.a
 LIBCMPFIT=libcmpfit.a
 
 PKG_CONFIG_CFLAGS = -DCURL_STATICLIB
-PKG_CONFIG_LIBS = $(gdal-config --libs) $(gdal-config --dep-libs)
+PKG_CONFIG_LIBS = $(shell gdal-config --libs) $(shell gdal-config --dep-libs)
 
 
 PKG_CFLAGS += -DDLLEXPORT -D_USE_MATH_DEFINES -D_WIN32 \
