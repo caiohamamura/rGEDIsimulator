@@ -1,11 +1,9 @@
 ![](https://github.com/carlos-alberto-silva/rGEDI/blob/master/readme/fig1.png)<br/>
 
-[![R-CMD-check](https://github.com/carlos-alberto-silva/rGEDI/actions/workflows/r.yml/badge.svg?branch=master)](https://github.com/carlos-alberto-silva/rGEDI/actions/workflows/r.yml)
-[![CRAN](https://www.r-pkg.org/badges/version/rGEDI)](https://cran.r-project.org/package=rGEDI)
-![Github](https://img.shields.io/badge/Github-0.1.12-green.svg)
+[![CRAN](https://www.r-pkg.org/badges/version/rGEDIsimulator)](https://cran.r-project.org/package=rGEDIsimulator)
+![Github](https://img.shields.io/badge/Github-0.1.1-green.svg)
 ![licence](https://img.shields.io/badge/Licence-GPL--3-blue.svg) 
-![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/rGEDI)
-[![Build Status](https://travis-ci.com/carlos-alberto-silva/rGEDI.svg?token=Jqizwyc6gBxNafNccTdU&branch=master)](https://travis-ci.com/carlos-alberto-silva/rGEDI)
+![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/rGEDIsimulator)
 
 **rGEDI: An R Package for NASA's Global Ecosystem Dynamics Investigation (GEDI) Data Visualizing and Processing.**
 
@@ -161,12 +159,9 @@ We gratefully acknowledge funding from NASA’s Carbon Monitoring Systems, grant
 The Brazilian National Council for Scientific and Technological Development (CNPq) for funding the project entitled "Mapping fuel load and simulation of fire behaviour and spread in the Cerrado biome using modeling and remote sensing technologies" and leaded by Prof. Dr. Carine Klauberg (carine_klauberg@hotmail.com) and Dr. Carlos Alberto Silva
 (carlos_engflorestal@outlook.com).
 
-# Reporting Issues 
-Please report any issue regarding the rGEDI package herein https://groups.yahoo.com/neo/groups/rGEDI
-
-# Citing rGEDI
-Silva,C.A; Hamamura,C.; Valbuena, R.; Hancock,S.; Cardil,A.; Broadbent, E. N.; Almeida,D.R.A.; Silva Junior, C.H.L; Klauberg, C. rGEDI: NASA's Global Ecosystem Dynamics Investigation (GEDI) Data Visualization and Processing.
-version 0.1.9, accessed on October. 22 2020, available at: <https://CRAN.R-project.org/package=rGEDI>
+# Citing rGEDIsimulator
+Hamamura,C.; Silva,C.A; Hancock,S.; Valbuena, R.; Cardil,A.; Broadbent, E. N.; Almeida,D.R.A.; Silva Junior, C.H.L; Klauberg, C. NASA's Global Ecosystem Dynamics Investigation (GEDI) Simulator for ALS Data.
+version 0.1.1, accessed on April. 04 2024, available at: <https://CRAN.R-project.org/package=rGEDIsimulator>
 
 # Disclaimer
 **rGEDI package has not been developted by the GEDI team. It comes with no guarantee, expressed or implied, and the authors hold no responsibility for its use or reliability of its outputs.**
