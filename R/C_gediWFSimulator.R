@@ -100,10 +100,10 @@
 #'     als_Savanna <- readLAS(alsfile_Savanna_filepath)
 #'
 #'     # Extracting plot center geolocations
-#'     xcenter_Amazon <- mean(bbox(als_Amazon)[1, ])
-#'     ycenter_Amazon <- mean(bbox(als_Amazon)[2, ])
-#'     xcenter_Savanna <- mean(bbox(als_Savanna)[1, ])
-#'     ycenter_Savanna <- mean(bbox(als_Savanna)[2, ])
+#'     xcenter_Amazon <- mean(st_bbox(als_Amazon)[c(1, 3)])
+#'     ycenter_Amazon <- mean(st_bbox(als_Amazon)[c(2, 4)])
+#'     xcenter_Savanna <- mean(st_bbox(als_Savanna)[c(1, 3)])
+#'     ycenter_Savanna <- mean(st_bbox(als_Savanna)[c(2, 4)])
 #'
 #'     # Simulating GEDI full waveform
 #'     wf_Amazon <- gediWFSimulator(
