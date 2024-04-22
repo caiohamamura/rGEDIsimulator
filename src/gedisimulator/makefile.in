@@ -1,0 +1,32 @@
+# Makefile for GEDI simulator tools
+
+LIBS = @GSL_LIBS@ @HDF5_LDFLAGS@ @GDAL_DEP_LDFLAGS@ @GDAL_LDFLAGS@ @HDF5_LIBS@
+INCLS = -I/usr/local/include -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) -I$(LIBCLIDAR_ROOT) -I. @GSL_CFLAGS@ @HDF5_CPPFLAGS@ @GDAL_CFLAGS@ @GEOTIFF_INCLUDE@
+CFLAGS += -Wall -DUSEPHOTON
+#CFLAGS += -Wl,--verbose
+CFLAGS += -O3
+#CFLAGS += -g
+LIBFILES = $(LIBCLIDAR_ROOT)/libLasProcess.o $(LIBCLIDAR_ROOT)/libLasRead.o $(LIBCLIDAR_ROOT)/tiffWrite.o $(LIBCLIDAR_ROOT)/gaussFit.o $(LIBCLIDAR_ROOT)/libLidVoxel.o  $(LIBCLIDAR_ROOT)/libTLSread.o  $(LIBCLIDAR_ROOT)/libLidarHDF.o gediIO.o $(LIBCLIDAR_ROOT)/libOctree.o gediNoise.o photonCount.o
+LOCLIB = libLasProcess.o libLasRead.o tiffWrite.o gaussFit.o libLidVoxel.o libTLSread.o libLidarHDF.o gediIO.o libOctree.o gediNoise.o photonCount.o $(HANCOCKTOOLS_ROOT)/tools.o $(HANCOCKTOOLS_ROOT)/functionWrappers.o
+GSLFit=linear.o
+MIN=mpfit.o
+ARCH=$(shell uname -m)
+
+CC = gcc
+
+THIS=gediRat
+
+$(THIS):	$(THIS).o ${CMPFIT_ROOT}/$(MIN) ${LIBFILES}
+		$(CC) $(CFLAGS) $(MIN) $(LOCLIB) $@.o -o $@ $(LIBS) $(INCLS)
+
+.c.o:		$<
+		$(CC) $(CFLAGS) -I. $(INCLS) -D$(ARCH)  -c $<
+
+clean:
+		\rm -f *% *~ *.o
+
+install:
+		touch $(HOME)/bin/$(ARCH)/$(THIS)
+		mv $(HOME)/bin/$(ARCH)/$(THIS) $(HOME)/bin/$(ARCH)/$(THIS).old
+		cp $(THIS) $(HOME)/bin/$(ARCH)/$(THIS)
+
