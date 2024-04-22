@@ -1,7 +1,7 @@
 Package: rGEDIsimulator
 Type: Package
 Title: NASA's Global Ecosystem Dynamics Investigation (GEDI) Simulator for ALS Data
-Version: 0.1.1
+Version: 0.2.0
 Authors@R: c(
     person("Caio", "Hamamura", email = "caiohamamura@gmail.com", role = c("aut", "cph", "cre")),
     person("Carlos Alberto", "Silva", email = "carlos_engflorestal@outlook.com", role = c("aut", "cph")),

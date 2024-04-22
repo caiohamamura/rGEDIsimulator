@@ -5,18 +5,29 @@
 ![licence](https://img.shields.io/badge/Licence-GPL--3-blue.svg) 
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/rGEDIsimulator)
 
-**rGEDI: An R Package for NASA's Global Ecosystem Dynamics Investigation (GEDI) Data Visualizing and Processing.**
+**rGEDISimulator: GEDI simulator extension for rGEDI**
 
-Authors: Carlos Alberto Silva, Caio Hamamura, Ruben Valbuena, Steven Hancock, Adrian Cardil, Eben N. Broadbent, Danilo R. A. de Almeida, Celso H. L. Silva Junior and Carine Klauberg  
+Authors: Caio Hamamura, Carlos Alberto Silva, Ruben Valbuena, Steven Hancock, Adrian Cardil, Eben N. Broadbent, Danilo R. A. de Almeida, Celso H. L. Silva Junior and Carine Klauberg  
 
-The rGEDI package provides functions for i) downloading, ii) visualizing, iii) clipping, iv) gridding, iv) simulating and v) exporting GEDI data.
+The rGEDIsimulator will provide fullwaveform GEDI data simulation and calculates metrics based on aerial lidar systems data (ALS).
 
 # Getting Started
 
 ## Installation
+
+First we need to install rGEDI itself:
 ```r
 # Install from github
-devtools::install_git("https://github.com/caiohamamura/Rgedisimulator", dependencies = TRUE)
+devtools::install_github("carlos-alberto-silva/rGEDI", dependencies = TRUE)
+
+library(rGEDI)
+```    
+
+Then we can install the rGEDI simulator
+
+```r
+# Install from github
+devtools::install_github("caiohamamura/Rgedisimulator", dependencies = TRUE)
 
 library(rGEDIsimulator)
 ```    

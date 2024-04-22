@@ -1,5 +1,11 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# rGEDIsimulator 0.2.0 (2024-04-22)
+
+* Added dependencies to tree instead of submodule
+* Compile in windows using gdal-config instead of fixed
+
+
 # rGEDI 0.4.0 (2023-06-15)
 
 * gediMetrics: now working again, had a bug, allow beam filter
