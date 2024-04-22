@@ -10,7 +10,7 @@ LIBGEDISIMULATOR=libgedisimulator.a
 LIBCMPFIT=libcmpfit.a
 
 PKG_CONFIG_CFLAGS = -DCURL_STATICLIB
-PKG_CONFIG_LIBS = $(shell pkg-config --libs gdal) -lharfbuzz -lharfbuzz_too -lfreetype_too -lgsl -lgslcblas -lm
+PKG_CONFIG_LIBS = $(shell pkg-config --libs gdal proj gsl) -lhdf5 $(shell pkg-config --libs libcurl libcrypto)
 
 
 PKG_CFLAGS += -DDLLEXPORT -D_USE_MATH_DEFINES -D_WIN32 \
@@ -46,10 +46,11 @@ $(LIBTOOLS): $(TOOLS)
 $(LIBCLIDAR): $(CLIDAR)
 $(LIBCMPFIT): $(CMPFIT)
 $(LIBGEDISIMULATOR): $(GEDISIMULATOR)
+$(OBJECTS): winlibs
 
 winlibs:
-	cp -r $(GDAL_BASE)/share/gdal ../inst/
-	cp -r $(GDAL_BASE)/share/proj ../inst/
+	cp -r $(shell dirname `which gcc`)/../share/gdal ../inst/
+	cp -r $(shell dirname `which gcc`)/../share/proj ../inst/
 
 
 .PHONY: all winlibs
