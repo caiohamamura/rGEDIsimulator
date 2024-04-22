@@ -33,9 +33,5 @@ OBJECTS = $(src:.c=.o)
 all: $(SHLIB)
 $(SHLIB): $(OBJECTS)
 $(OBJECTS): $(src)
-$(src): deps
 
-deps:
-	"$(R_HOME)/bin/Rscript" ../tools/deps.R
-
-.PHONY: all deps
+.PHONY: all
