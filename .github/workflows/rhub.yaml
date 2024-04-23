@@ -87,8 +87,7 @@ jobs:
           job-config: ${{ matrix.config.job-config }}
       - name: Install rGEDI
         run: |
-          echo "USERDIR=$(Rscript -e 'fs::path_home()')" >> "$GITHUB_ENV"
-          echo "options(repos=c(CRAN=c('https://caiohamamura.r-universe.dev', 'https://cloud.r-project.org')))" > "$USERDIR/.Rprofile"
+          echo "options(repos=c(CRAN=c('https://caiohamamura.r-universe.dev', 'https://cloud.r-project.org')))" > "$HOME/.Rprofile"
       - uses: r-hub/actions/setup-deps@v1
         with:
           job-config: ${{ matrix.config.job-config }}
