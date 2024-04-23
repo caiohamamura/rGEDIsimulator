@@ -86,7 +86,7 @@ jobs:
           token: ${{ secrets.RHUB_TOKEN }}
           job-config: ${{ matrix.config.job-config }}
       - name: Install rGEDI
-        run: Rscript -e "install.packages('rGEDI', repos = c('https://caiohamamura.r-universe.dev', 'https://cran.r-project.org'))"
+        run: touch ~/.Rprofile && echo "options(repos=c(CRAN=c('https://caiohamamura.r-universe.dev', 'https://cloud.r-project.org')))" > ~/.Rprofile
       - uses: r-hub/actions/setup-deps@v1
         with:
           job-config: ${{ matrix.config.job-config }}
