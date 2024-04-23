@@ -85,12 +85,12 @@ jobs:
         with:
           token: ${{ secrets.RHUB_TOKEN }}
           job-config: ${{ matrix.config.job-config }}
+      - name: Install rGEDI
+        run: Rscript -e "install.packages('rGEDI', repos = c('https://caiohamamura.r-universe.dev', 'https://cran.r-project.org'))"
       - uses: r-hub/actions/setup-deps@v1
         with:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
-      - name: Install rGEDI
-        run: Rscript -e "remotes::install_github('carlos-alberto-silva/rGEDI')"
       - uses: r-hub/actions/run-check@v1
         with:
           job-config: ${{ matrix.config.job-config }}
