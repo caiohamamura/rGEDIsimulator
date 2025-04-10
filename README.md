@@ -18,7 +18,7 @@ The rGEDIsimulator will provide fullwaveform GEDI data simulation and calculates
 First we need to install rGEDI itself:
 ```r
 # Install from github
-devtools::install_github("carlos-alberto-silva/rGEDI", dependencies = TRUE)
+install.packages('rGEDI', repos = c('https://carlos-alberto-silva.r-universe.dev', 'https://cloud.r-project.org'))
 
 library(rGEDI)
 ```    
@@ -27,7 +27,7 @@ Then we can install the rGEDI simulator
 
 ```r
 # Install from github
-devtools::install_github("caiohamamura/Rgedisimulator", dependencies = TRUE)
+install.packages('rGEDIsimulator', repos = c('https://caiohamamura.r-universe.dev', 'https://cloud.r-project.org'))
 
 library(rGEDIsimulator)
 ```    
