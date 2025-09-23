@@ -211,8 +211,8 @@
 #'   # Extracting plot center geolocations
 #'   xcenter_Amazon <- mean(st_bbox(als_Amazon)[c(1, 3)])
 #'   ycenter_Amazon <- mean(st_bbox(als_Amazon)[c(2, 4)])
-#'   xcenter_Savanna <- mean(bbox(als_Savanna)[c(1, 3)])
-#'   ycenter_Savanna <- mean(bbox(als_Savanna)[c(2, 4)])
+#'   xcenter_Savanna <- mean(st_bbox(als_Savanna)[c(1, 3)])
+#'   ycenter_Savanna <- mean(st_bbox(als_Savanna)[c(2, 4)])
 #'
 #'   # Simulating GEDI full waveform
 #'   wf_Amazon <- gediWFSimulator(
