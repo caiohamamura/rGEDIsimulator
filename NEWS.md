@@ -1,5 +1,14 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# rGEDIsimulator 0.2.3 (2025-09-22)
+
+* Correclty wraps exit and print functions
+* Added rhub check
+* Update st_bbox from lidR instead of bbox
+* Update st_bbox from lidR instead of bbox
+* Use pkg-config to configure libraries
+
+
 # rGEDIsimulator 0.2.1 (2024-04-22)
 
 * Update st_bbox from lidR instead of bbox
