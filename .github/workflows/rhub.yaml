@@ -51,15 +51,30 @@ jobs:
       image: ${{ matrix.config.container }}
 
     steps:
+      - name: Configure git
+        run: git config --global core.autocrlf false
       - uses: r-hub/actions/checkout@v1
       - uses: r-hub/actions/platform-info@v1
         with:
           token: ${{ secrets.RHUB_TOKEN }}
           job-config: ${{ matrix.config.job-config }}
-      - uses: r-hub/actions/setup-deps@v1
-        with:
-          token: ${{ secrets.RHUB_TOKEN }}
-          job-config: ${{ matrix.config.job-config }}
+      - name: Install System Requirements
+        run: |
+          source /etc/os-release
+          if [[ "$ID" == "debian" || "$ID_LIKE" == *"debian"* ]]; then
+            apt-get update
+            apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libhdf5-dev libabsl-dev libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite3-dev cmake
+          elif [[ "$ID" == "rhel" || "$ID_LIKE" == *"rhel"* || "$ID" == "fedora" || "$ID_LIKE" == *"fedora"* ]]; then
+            dnf update
+            dnf install -y libcurl-devel openssl-devel libxml2-devel hdf5-devel abseil-cpp-devel udunits2-devel gdal-devel proj-devel geos-devel sqlite-devel cmake
+          fi
+        shell: bash {0}
+      - name: Install rGEDI
+        run: |
+          install.packages('devtools')
+          devtools::install_github('carlos-alberto-silva/rGEDI', dependencies = TRUE)
+          devtools::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
       - uses: r-hub/actions/run-check@v1
         with:
           token: ${{ secrets.RHUB_TOKEN }}
@@ -76,6 +91,8 @@ jobs:
         config: ${{ fromJson(needs.setup.outputs.platforms) }}
 
     steps:
+      - name: Configure git
+        run: git config --global core.autocrlf false
       - uses: r-hub/actions/checkout@v1
       - uses: r-hub/actions/setup-r@v1
         with:
@@ -87,11 +104,10 @@ jobs:
           job-config: ${{ matrix.config.job-config }}
       - name: Install rGEDI
         run: |
-          echo "options(repos=c(CRAN=c('https://caiohamamura.r-universe.dev', 'https://cloud.r-project.org')))" > "$HOME/.Rprofile"
-      - uses: r-hub/actions/setup-deps@v1
-        with:
-          job-config: ${{ matrix.config.job-config }}
-          token: ${{ secrets.RHUB_TOKEN }}
+          install.packages('rGEDI', repos = c('https://carlos-alberto-silva.r-universe.dev', 'https://cloud.r-project.org'))
+          install.packages('devtools')
+          devtools::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
       - uses: r-hub/actions/run-check@v1
         with:
           job-config: ${{ matrix.config.job-config }}
