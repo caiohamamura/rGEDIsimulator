@@ -23,16 +23,25 @@ int errorf(const char *format, ...) {
 }
 
 float frand() {
-    float max=0;
-    if(RAND_MAX>0)max=(float)RAND_MAX;
-    else          max=-1.0*(float)RAND_MAX;
-    return((float)rand()/max);
+    return (float)unif_rand();
 }
 
-int rand2() {
-    return rand();
+int override_fprintf(FILE* stream, const char* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    int res;
+    if (stream == r_stderr) REvprintf(fmt, args);
+    else if (stream == r_stdout) Rvprintf(fmt, args);
+    else res = vfprintf(stream, fmt, args);
+    va_end(args);
+    return res;
 }
 
-void srand2(int seed) {
-    srand(seed);
+int override_fflush(FILE* stream) {
+    if (stream == r_stdout || stream == r_stderr) return 0;
+    return fflush(stream);
+}
+
+void override_srand(unsigned int seed) {
+    return;
 }

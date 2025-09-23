@@ -2060,8 +2060,8 @@ control *readCommands(int argc,char **argv)
   void writeHelp();
 
   /*by default, set the seed as time. Can be overridden later*/
-  srand2((long)time(NULL));
-  for(j=(int)(time(NULL)%50);j>=0;j--)rand2();
+  srand((long)time(NULL));
+  for(j=(int)(time(NULL)%50);j>=0;j--)rand();
 
   /*allocate structures*/
   if(!(dimage=(control *)calloc(1,sizeof(control)))){
@@ -2252,8 +2252,8 @@ control *readCommands(int argc,char **argv)
         dimage->noise.nSig=atof(argv[++i]);
       }else if(!strncasecmp(argv[i],"-seed",5)){
         ISINTRETNULL(checkArguments(1,i,argc,"-seed"));
-        srand2(atoi(argv[++i]));
-        for(j=rand2()%50;j>=0;j--)rand2();
+        srand(atoi(argv[++i]));
+        for(j=rand()%50;j>=0;j--)rand();
       }else if(!strncasecmp(argv[i],"-meanN",5)){
         ISINTRETNULL(checkArguments(1,i,argc,"-meanN"));
         dimage->gediIO.den->meanN=atof(argv[++i]);

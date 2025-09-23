@@ -716,7 +716,7 @@ control *readCommands(int argc,char **argv)
         dimage->gediIO.useFrac=0;
       }else if(!strncasecmp(argv[i],"-seed",5)){
         ISINTRETNULL(checkArguments(1,i,argc,"-seed"));
-        srand2(atoi(argv[++i]));
+        srand(atoi(argv[++i]));
       }else if(!strncasecmp(argv[i],"-decimate",9)){
         ISINTRETNULL(checkArguments(1,i,argc,"-decimate"));
         dimage->gediRat.decimate=atof(argv[++i]);

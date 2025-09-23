@@ -21,3 +21,6 @@ inst/proj
 src/Makevars
 config.status
 test.R
+check
+check_win
+autom4te.cache

@@ -562,7 +562,7 @@ int writeGEDIl1b(gediHDF *hdfData,char *namen,gediIOstruct *gediIO)
   /*ancillary subgroup*/
   sgID=H5Gcreate2(group_id,"ancillary",H5P_DEFAULT,H5P_DEFAULT,H5P_DEFAULT);
   ASSIGN_CHECKNULL_RETINT(tempDouble, dalloc(1,"temp double",0));
-  tempDouble[0]=(double)rand2();
+  tempDouble[0]=(double)rand();
   ISINTRETINT(write1dDoubleHDF5(sgID,"master_time_epoch",tempDouble,1));
   TIDY(tempDouble);
   if(!(tempInt64=(int64_t *)calloc(1,sizeof(int64_t)))){

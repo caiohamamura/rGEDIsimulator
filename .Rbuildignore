@@ -16,3 +16,6 @@
 ^CRAN-SUBMISSION$
 ^cran-comments\.md$
 ^\.lintr$
+^check$
+^check_win$
+^autom4te.cache$

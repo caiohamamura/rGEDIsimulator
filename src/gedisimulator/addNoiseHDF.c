@@ -278,7 +278,7 @@ control *readCommands(int argc,char **argv)
         dimage->noise.maxDN=pow(2.0,(float)dimage->noise.bitRate);
       }else if(!strncasecmp(argv[i],"-seed",5)){
         checkArguments(1,i,argc,"-seed");
-        srand2(atoi(argv[++i]));
+        srand(atoi(argv[++i]));
       }else if(!strncasecmp(argv[i],"-dcBias",7)){
         checkArguments(1,i,argc,"-dcBias");
         dimage->noise.offset=atof(argv[++i]);

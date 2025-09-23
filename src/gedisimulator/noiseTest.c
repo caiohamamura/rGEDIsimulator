@@ -645,7 +645,7 @@ control *readCommands(int argc,char **argv)
         dimage->deSig=atof(argv[++i]);
       }else if(!strncasecmp(argv[i],"-seed",5)){
         checkArguments(1,i,argc,"-seed");
-        srand2(atoi(argv[++i]));
+        srand(atoi(argv[++i]));
       }else if(!strncasecmp(argv[i],"-bitRate",8)){
         checkArguments(1,i,argc,"-bitRate");
         dimage->bitRate=atoi(argv[++i]);
