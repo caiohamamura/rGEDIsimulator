@@ -29,12 +29,8 @@ int override_fprintf(FILE* stream, const char* fmt, ...);
 #undef stdout
 #define stdout r_stdout
 
-static FILE* r_stderr = NULL;
-static FILE* r_stdout = NULL;
-
-#undef sprintf
-#define sprintf(buf, ...) snprintf(buf, 8192, __VA_ARGS__)
-
+extern FILE* r_stderr;
+extern FILE* r_stdout;
 
 #undef fflush
 #define fflush override_fflush
