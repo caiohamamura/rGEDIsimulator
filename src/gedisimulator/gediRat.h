@@ -6,8 +6,8 @@
 typedef struct
 {
   char **inList;
-  char outNamen[1000];
-  char waveNamen[400];
+  char outNamen[400];
+  char waveNamen[1000];
 
   /*IO structure*/
   gediIOstruct gediIO;   /*generic IO options*/

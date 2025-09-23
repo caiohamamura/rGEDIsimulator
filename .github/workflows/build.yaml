@@ -64,7 +64,10 @@ jobs:
 
       - name: Install dependencies on macos
         if: runner.os == 'macOS'
-        run: brew install gsl gdal hdf5 zlib libaec
+        run: |
+          brew install gsl gdal hdf5 zlib libaec
+          echo "LDFLAGS=-L$(brew --prefix libaec)/lib" >> $GITHUB_ENV
+          echo "CPPFLAGS=-I$(brew --prefix libaec)/include" >> $GITHUB_ENV
       
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:

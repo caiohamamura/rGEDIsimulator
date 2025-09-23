@@ -343,7 +343,7 @@ lvisHDF *readLVIShdf(char *inNamen)
   lvisHDF *lvis=NULL;
   int checkNumber(int,int,char *);
   hid_t file;         /* Handles */
-  char varName[10];  /*name for variable bin HDF5 files*/
+  char varName[15];  /*name for variable bin HDF5 files*/
 
 
   /*allocate structure*/
