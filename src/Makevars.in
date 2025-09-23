@@ -11,12 +11,11 @@ PKG_CFLAGS=@HDF5_CPPFLAGS@ \
 	   -DDLLEXPORT -D__STDC_FORMAT_MACROS \
 	   -DUSEPHOTON \
 	   -I$(GEDIRAT_ROOT) -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) \
-	   -I${LIBCLIDAR_ROOT} -I. -include tools/functionWrappers.h \
-	   -U_FORTIFY_SOURCE
+	   -I${LIBCLIDAR_ROOT} -I. -include tools/functionWrappers.h
 
-PKG_LIBS=@HDF5_LDFLAGS@ @HDF5_LIBS@\
+PKG_LIBS=-Wl,--start-group @HDF5_LDFLAGS@ @HDF5_LIBS@\
          @GSL_LIBS@ \
-         @GDAL_LDFLAGS@
+         @GDAL_LDFLAGS@ -Wl,--end-group
 
 
 src = $(HANCOCKTOOLS_ROOT)/functionWrappers.c \

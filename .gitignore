@@ -19,8 +19,11 @@ doc
 inst/gdal
 inst/proj
 src/Makevars
+src/Makevars.ucrt
 config.status
 test.R
 check
 check_win
 autom4te.cache
+aclocal.m4
+
