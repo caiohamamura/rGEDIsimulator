@@ -201,7 +201,7 @@ void setArea(control *dimage)
 
 void openOutput(control *dimage)
 {
-  sprintf(dimage->canNamen,"%s.can.pts",dimage->outRoot);
+  snprintf(dimage->canNamen,sizeof(dimage->canNamen),"%s.can.pts",dimage->outRoot);
   if((dimage->opoo=fopen(dimage->canNamen,"w"))==NULL){
     errorf("Error opening output file %s\n",dimage->canNamen);
     exit(1);
@@ -209,7 +209,7 @@ void openOutput(control *dimage)
   fprintf(dimage->opoo,"# 1 x, 2 y, 3 z, 4 intensity, 5 scanAng, 6+ RGB if available\n");
 
   if(dimage->ground){
-    sprintf(dimage->grNamen,"%s.ground.pts",dimage->outRoot);
+    snprintf(dimage->grNamen,sizeof(dimage->grNamen),"%s.ground.pts",dimage->outRoot);
     if((dimage->gPoo=fopen(dimage->grNamen,"w"))==NULL){
       errorf("Error opening output file %s\n",dimage->grNamen);
       exit(1);

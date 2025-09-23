@@ -398,7 +398,7 @@ void writeWaves(dataStruct *data,control *dimage,int numb)
   char namen[200];
   FILE *opoo=NULL;
 
-  sprintf(namen,"%s.%d.wave",dimage->outRoot,numb);
+  snprintf(namen,sizeof(namen),"%s.%d.wave",dimage->outRoot,numb);
   if((opoo=fopen(namen,"w"))==NULL){
     errorf("Error opening output file %s\n",namen);
     exit(1);

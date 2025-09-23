@@ -311,7 +311,7 @@ int writeSNR(char *outRoot,snrStruct *snr)
   FILE *opoo=NULL;
 
   /*open file*/
-  sprintf(namen,"%s.snr.txt",outRoot);
+  snprintf(namen,sizeof(namen),"%s.snr.txt",outRoot);
   if((opoo=fopen(namen,"w"))==NULL){
     errorf("Error opening output file %s\n",namen);
     return(-1);
@@ -996,7 +996,7 @@ int writeResults(dataStruct *data,control *dimage,metStruct *metric,int numb,flo
 
   /*open file if needed*/
   if((dimage->opooGauss==NULL)&&(dimage->writeGauss)){
-    sprintf(namen,"%s.gauss.txt",dimage->outRoot);
+    snprintf(namen,sizeof(namen),"%s.gauss.txt",dimage->outRoot);
     if((dimage->opooGauss=fopen(namen,"w"))==NULL){
       errorf("Error opening output file %s\n",namen);
       return(-1);
@@ -1006,7 +1006,7 @@ int writeResults(dataStruct *data,control *dimage,metStruct *metric,int numb,flo
     fprintf(dimage->opooGauss,", %d wave name\n",3*i+6);
   }
   if(dimage->opooMet==NULL){
-    sprintf(namen,"%s.metric.txt",dimage->outRoot);
+    snprintf(namen,sizeof(namen),"%s.metric.txt",dimage->outRoot);
     if((dimage->opooMet=fopen(namen,"w"))==NULL){
       errorf("Error opening output file %s\n",namen);
       return(-1);
@@ -1113,8 +1113,8 @@ int writeResults(dataStruct *data,control *dimage,metStruct *metric,int numb,flo
 
   /*fitted wave if required*/
   if(dimage->writeFit){
-    if(data->useID==0)sprintf(waveNamen,"%s.%d.fit",dimage->outRoot,numb);
-    else              sprintf(waveNamen,"%s.%s.fit",dimage->outRoot,data->waveID);
+    if(data->useID==0)snprintf(waveNamen,sizeof(waveNamen),"%s.%d.fit",dimage->outRoot,numb);
+    else              snprintf(waveNamen,sizeof(waveNamen),"%s.%s.fit",dimage->outRoot,data->waveID);
     if((opoo=fopen(waveNamen,"w"))==NULL){
       errorf("Error opening output file %s\n",waveNamen);
       return(-1);

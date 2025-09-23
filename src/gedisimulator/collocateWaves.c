@@ -600,7 +600,7 @@ void writeFinalWaves(control *dimage,dataStruct **lvis,pCloudStruct **als,double
   dimage->gediRat.waveIDlist=NULL;
 
   /*allocate space*/
-  sprintf(waveID,"%s.100000000",lvis[0]->waveID);
+  snprintf(waveID, sizeof(waveID), "%s.100000000", lvis[0]->waveID);
   hdfData=setUpHDF(&dimage->simIO,&dimage->gediRat,1,waveID,&hdfCount,1024);
 
   /*set to optimum sigma*/

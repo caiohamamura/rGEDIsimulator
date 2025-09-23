@@ -13,7 +13,7 @@ void allocAndCopy(char **argv, int *pos, const char *value) {
 void putArgName(char **argv, int *pos, const char *argName)
 {
     char value[50];
-    sprintf(value, "-%s", argName);
+    snprintf(value, sizeof(value), "-%s", argName);
     allocAndCopy(argv, pos, value);
 }
 
@@ -44,7 +44,7 @@ void integerArg(char **argv, int *pos, const char *argName, SEXP in)
 
     putArgName(argv, pos, argName);
     char value[50];
-    sprintf(value, "%d", asInteger(in));
+    snprintf(value, sizeof(value), "%d", asInteger(in));
     allocAndCopy(argv, pos, value);
 }
 
@@ -55,7 +55,7 @@ void realArg(char **argv, int *pos, const char *argName, SEXP in)
 
     putArgName(argv, pos, argName);
     char value[50];
-    sprintf(value, "%.14lf", asReal(in));
+    snprintf(value, sizeof(value), "%.14lf", asReal(in));
     allocAndCopy(argv, pos, value);
 }
 
@@ -71,7 +71,7 @@ void integerArrayArg(char **argv, int *pos, const char *argName, SEXP in)
     for (int i = 0; i < size; i++)
     {
         char value[50];
-        sprintf(value, "%d", INTEGER(in)[i]);
+        snprintf(value, sizeof(value), "%d", INTEGER(in)[i]);
         allocAndCopy(argv, pos, value);
     }
 }
@@ -88,7 +88,7 @@ void realArrayArg(char **argv, int *pos, const char *argName, SEXP in)
     for (int i = 0; i < size; i++)
     {
         char value[50];
-        sprintf(value, "%.14lf", REAL(in)[i]);
+        snprintf(value, sizeof(value), "%.14lf", REAL(in)[i]);
         allocAndCopy(argv, pos, value);
     }
 }

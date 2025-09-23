@@ -46,12 +46,13 @@ fi
 ##################
 ## SZIP
 ##################
-AC_CHECK_LIB( sz, SZ_BufftoBuffCompress,
-	     HAVE_LIBSZ="yes",
-	     AC_MSG_ERROR(could not find szip:
-                         Debian: sudo apt install libsz2
-                         RPM-based: sudo dnf install szip
-                         MacOS: brew install szip))
+AC_CHECK_LIB([aec], [SZ_BufftoBuffCompress],
+             [HAVE_LIBSZ="yes"
+              AC_DEFINE([HAVE_LIBSZ], [1], [Define if SZIP/libaec is available])],
+             [AC_MSG_ERROR([could not find SZIP (libaec):
+    Debian/Ubuntu: sudo apt install libaec-dev
+    RPM-based:    sudo dnf install libaec-devel
+    macOS:        brew install libaec])])gediRat.c:207
 
 
 

@@ -1407,7 +1407,7 @@ int writeAsciiVox(voxStruct *vox,char *outRoot)
   char namen[200];
   FILE *opoo=NULL;
 
-  sprintf(namen,"%s.vox",outRoot);
+  snprintf(namen,sizeof(namen),"%s.vox",outRoot);
   if((opoo=fopen(namen,"w"))==NULL){
     errorf("Error opening output file %s\n",namen);
     return (-1);

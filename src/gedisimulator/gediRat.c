@@ -202,9 +202,9 @@ void checkWaveOverwrite(control *dimage,int numb)
 
   /*set output filename*/
   if(dimage->gediRat.doGrid){
-    sprintf(dimage->waveNamen,"%s.%d.%d.wave",dimage->outNamen,(int)dimage->gediRat.coord[0],(int)dimage->gediRat.coord[1]);
+    snprintf(dimage->waveNamen,sizeof(dimage->waveNamen),"%s.%d.%d.wave",dimage->outNamen,(int)dimage->gediRat.coord[0],(int)dimage->gediRat.coord[1]);
   }else if(dimage->gediRat.readALSonce){
-    sprintf(dimage->waveNamen,"%s.%s.wave",dimage->outNamen,dimage->gediRat.waveIDlist[numb]);
+    snprintf(dimage->waveNamen,sizeof(dimage->waveNamen),"%s.%s.wave",dimage->outNamen,dimage->gediRat.waveIDlist[numb]);
   }else{
     strcpy(dimage->waveNamen,dimage->outNamen);
   }
@@ -389,9 +389,9 @@ int writeGEDIwave(control *dimage,waveStruct *waves,int numb)
   if(dimage->gediRat.doGrid){
     if(dimage->useID){
       if(dimage->gediRat.geoCoords){
-        sprintf(waveID,"%s.%d.%d",dimage->waveID,(int)dimage->gediRat.geoCoords[numb][0],(int)dimage->gediRat.geoCoords[numb][1]);
+        snprintf(waveID,sizeof(waveID),"%s.%d.%d",dimage->waveID,(int)dimage->gediRat.geoCoords[numb][0],(int)dimage->gediRat.geoCoords[numb][1]);
       }else{
-        sprintf(waveID,"%s.%d.%d",dimage->waveID,(int)dimage->gediRat.coord[0],(int)dimage->gediRat.coord[1]);
+        snprintf(waveID,sizeof(waveID),"%s.%d.%d",dimage->waveID,(int)dimage->gediRat.coord[0],(int)dimage->gediRat.coord[1]);
       }
     }
   }else if(dimage->gediRat.readALSonce){

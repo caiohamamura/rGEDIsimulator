@@ -407,13 +407,13 @@ lvisHDF *readLVIShdf(char *inNamen)
   checkNumber(nWaves,lvis->nWaves,"TXWAVE");*/
 
   /*use the number of bins to determine the last bin variable names*/
-  sprintf(varName,"LAT%d",lvis->nBins-1);
+  snprintf(varName,sizeof(varName),"LAT%d",lvis->nBins-1);
   ASSIGN_CHECKNULL_RETNULL(lvis->lat1023,read1dDoubleHDF5(file,varName,&nWaves));
   ISINTRETNULL(checkNumber(nWaves,lvis->nWaves,varName));
-  sprintf(varName,"LON%d",lvis->nBins-1);
+  snprintf(varName,sizeof(varName),"LON%d",lvis->nBins-1);
   ASSIGN_CHECKNULL_RETNULL(lvis->lon1023,read1dDoubleHDF5(file,varName,&nWaves));
   ISINTRETNULL(checkNumber(nWaves,lvis->nWaves,varName));
-  sprintf(varName,"Z%d",lvis->nBins-1);
+  snprintf(varName,sizeof(varName),"Z%d",lvis->nBins-1);
   ASSIGN_CHECKNULL_RETNULL(lvis->z1023,read1dFloatHDF5(file,varName,&nWaves));
   ISINTRETNULL(checkNumber(nWaves,lvis->nWaves,varName));
 

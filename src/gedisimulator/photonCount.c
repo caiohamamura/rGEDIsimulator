@@ -187,7 +187,7 @@ int writePCLwaves(dataStruct *data,float *wave,float *photWave,float *corrWave)
   FILE *opoo=NULL;
 
   /*name and open file*/
-  sprintf(waveNamen,"pclWave.%s.count.%d.txt",data->waveID,c);
+  snprintf(waveNamen,sizeof(waveNamen),"pclWave.%s.count.%d.txt",data->waveID,c);
   if((opoo=fopen(waveNamen,"w"))==NULL){
     errorf("Error opening output file %s\n",waveNamen);
     return -1;
@@ -706,7 +706,7 @@ int photonCountCloud(float *denoised,dataStruct *data,photonStruct *photonCount,
 
   /*open file if needed*/
   if(photonCount->opoo==NULL){
-    sprintf(photonCount->outNamen,"%s.pts",outRoot);
+    snprintf(photonCount->outNamen,sizeof(photonCount->outNamen),"%s.pts",outRoot);
     if((photonCount->opoo=fopen(photonCount->outNamen,"w"))==NULL){
       errorf("Error opening input file %s\n",photonCount->outNamen);
       return(-1);

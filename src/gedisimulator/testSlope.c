@@ -122,7 +122,7 @@ void writeWave(float slope, float *wave,int nBins,control *dimage)
   FILE *opoo=NULL;
 
 
-  sprintf(namen,"%s.%g.wave",dimage->outNamen,slope*180.0/M_PI);
+  snprintf(namen,sizeof(namen),"%s.%g.wave",dimage->outNamen,slope*180.0/M_PI);
   if((opoo=fopen(namen,"w"))==NULL){
     errorf("Error opening output file %s\n",namen);
     exit(1);

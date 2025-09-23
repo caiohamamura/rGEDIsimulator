@@ -176,7 +176,7 @@ int drawTiffFlo(char *outRoot,double *geoL,int *geoI,double res,float *image,int
   GTIF *gtif=(GTIF*)0; /* GeoKey-level descriptor */
   char namen[200];
 
-  sprintf(namen,"%s.tif",outRoot);
+  snprintf(namen,sizeof(namen),"%s.tif",outRoot);
   tif=XTIFFOpen(namen,"w");
   if(!tif){
     errorf("Error opening %s\n",namen);

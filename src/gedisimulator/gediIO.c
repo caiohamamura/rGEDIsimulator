@@ -391,7 +391,7 @@ int trimDataLength(dataStruct **data,gediHDF *hdfData,gediIOstruct *gediIO)
     hdfData->gElev[numb]=data[i]->gElev;
     hdfData->demElev[numb]=data[i]->demGround;
     if(maxID>0)strcpy(&(hdfData->waveID[numb*hdfData->idLength]),data[i]->waveID);
-    else       sprintf(&(hdfData->waveID[numb*hdfData->idLength]),"%d",i);
+    else       snprintf(&(hdfData->waveID[numb*hdfData->idLength]), hdfData->idLength,"%d",i);
     hdfData->beamDense[numb]=data[i]->beamDense;
     hdfData->pointDense[numb]=data[i]->pointDense;
     hdfData->zen[numb]=data[i]->zen;
@@ -1740,7 +1740,7 @@ void setGEDIwaveID(gediHDF *hdfData,int nUse,uint64_t *shotN,int *useInd,char *b
 
   for(i=0;i<nUse;i++){
     ind=i+hdfData->nWaves;
-    sprintf(&hdfData->waveID[ind*hdfData->idLength],"gedi.%s.%" PRIu64,beam,shotN[useInd[i]]);
+    snprintf(&hdfData->waveID[ind*hdfData->idLength], hdfData->idLength,"gedi.%s.%" PRIu64,beam,shotN[useInd[i]]);
   }
 
   return;
@@ -2486,7 +2486,7 @@ dataStruct *unpackHDFlvis(char *namen,lvisHDF **hdfLvis,gediIOstruct *gediIO,int
   data->lat=hdfLvis[0]->lat0[numb]+scale*dy;
   data->lfid=hdfLvis[0]->lfid[numb];
   data->shotN=hdfLvis[0]->shotN[numb];
-  sprintf(data->waveID,"%d.%d",hdfLvis[0]->lfid[numb],hdfLvis[0]->shotN[numb]);
+  snprintf(data->waveID, sizeof(data->waveID), "%d.%d", hdfLvis[0]->lfid[numb], hdfLvis[0]->shotN[numb]);
 
   /*analyse pulse*/
   if(gediIO->readPsigma){
@@ -2651,7 +2651,7 @@ dataStruct *readBinaryLVIS(char *namen,lvisLGWstruct *lvis,int numb,gediIOstruct
   scale=(double)botBin/432.0;
   data->lon=lvis->data[numb].lon0+dx*scale;
   data->lat=lvis->data[numb].lat0+dy*scale;
-  sprintf(data->waveID,"%d.%d",lvis->data[numb].lfid,lvis->data[numb].shotN);
+  snprintf(data->waveID, sizeof(data->waveID), "%d.%d", lvis->data[numb].lfid, lvis->data[numb].shotN);
 
   /*analyse pulse*/
   if(gediIO->readPsigma){
@@ -2995,7 +2995,7 @@ int setGediGrid(gediIOstruct *gediIO,gediRatStruct *gediRat)
     /*read list of coords*/
     if(gediRat->coords==NULL)
       ISINTRETINT(readFeetList(gediRat));
-      setRatBounds(gediRat);
+    setRatBounds(gediRat);
   }else{   /*single footprint*/
     gediRat->gNx=gediRat->gNy=1;
     gediRat->globMinX=gediRat->coord[0]-gediRat->maxSep;
@@ -3004,7 +3004,7 @@ int setGediGrid(gediIOstruct *gediIO,gediRatStruct *gediRat)
     gediRat->globMaxY=gediRat->coord[1]+gediRat->maxSep;
     ASSIGN_CHECKNULL_RETINT(gediRat->waveIDlist,chChalloc(1,"wave ID list",0));
     ASSIGN_CHECKNULL_RETINT(gediRat->waveIDlist[0],challoc(300,"wave ID list",1));
-    sprintf(gediRat->waveIDlist[0],"BEAM.x.%.2f.y.%.2f",gediRat->coord[0],gediRat->coord[1]);
+    snprintf(gediRat->waveIDlist[0], 300, "BEAM.x.%.2f.y.%.2f", gediRat->coord[0], gediRat->coord[1]);
   }
 
   if((gediIO->nMessages>1)&&(gediRat->gNx*gediRat->gNy)>gediIO->nMessages)gediIO->nMessages=(int)(gediRat->gNx*gediRat->gNy/gediIO->nMessages);
@@ -3261,7 +3261,7 @@ int readFeetList(gediRatStruct *gediRat)
       }else if(sscanf(line,"%s %s",temp1,temp2)==2){
         gediRat->coords[i][0]=gediRat->geoCoords[i][0]=atof(temp1);
         gediRat->coords[i][1]=gediRat->geoCoords[i][1]=atof(temp2);
-        sprintf(temp3,"%f.%f",gediRat->coords[i][0],gediRat->coords[i][1]);
+        snprintf(temp3, sizeof(temp3), "%f.%f", gediRat->coords[i][0], gediRat->coords[i][1]);
         ASSIGN_CHECKNULL_RETINT(gediRat->waveIDlist[i],challoc((int)strlen(temp3)+1,"wave ID list",i+1));
         strcpy(gediRat->waveIDlist[i],temp3);
       }else{
@@ -3757,10 +3757,10 @@ int packGEDIhdf(waveStruct *waves,gediHDF *hdfData,int waveNumb,gediIOstruct *ge
 
 
   /*ID*/
-  if(gediRat->doGrid)sprintf(thisWaveID,"%s.%d.%d",waveID,(int)gediRat->coord[0],(int)gediRat->coord[1]);
+  if(gediRat->doGrid)snprintf(thisWaveID, sizeof(thisWaveID), "%s.%d.%d", waveID, (int)gediRat->coord[0], (int)gediRat->coord[1]);
   else if(gediRat->waveIDlist)strcpy(thisWaveID,gediRat->waveIDlist[waveNumb]);
   else if(useID)strcpy(thisWaveID,waveID);
-  else                  sprintf(thisWaveID,"%d",numb);
+  else                  snprintf(thisWaveID, sizeof(thisWaveID), "%d", numb);
   idLength=(hdfData->idLength<((int)strlen(thisWaveID)+1))?hdfData->idLength:(int)strlen(thisWaveID)+1;
   memcpy(&hdfData->waveID[numb*hdfData->idLength],thisWaveID,idLength);
 
