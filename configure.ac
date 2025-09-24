@@ -69,8 +69,10 @@ fi
 ##################
 ## END
 ##################
-
-AC_SUBST(HDF5_LIBS)
+ALL_LIBS="$HDF5_LDFLAGS $HDF5_LIBS $GSL_LIBS $GDAL_LDFLAGS"
+# repeat to resolve circular deps
+PKG_LIBS="$ALL_LIBS $ALL_LIBS"
+AC_SUBST([PKG_LIBS])
 AC_CONFIG_FILES([src/Makevars src/Makevars.ucrt:src/Makevars.in])
 AC_OUTPUT
 

@@ -640,6 +640,7 @@ ac_includes_default="\
 ac_header_c_list=
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+PKG_LIBS
 HDF5_TYPE
 HDF5_FLIBS
 HDF5_FFLAGS
@@ -6591,7 +6592,9 @@ fi
 ##################
 ## END
 ##################
-
+ALL_LIBS="$HDF5_LDFLAGS $HDF5_LIBS $GSL_LIBS $GDAL_LDFLAGS"
+# repeat to resolve circular deps
+PKG_LIBS="$ALL_LIBS $ALL_LIBS"
 
 ac_config_files="$ac_config_files src/Makevars src/Makevars.ucrt:src/Makevars.in"
 

@@ -5,7 +5,7 @@ LIBCLIDAR_ROOT = libclidar
 CMPFIT_ROOT = cmpfit-1.5
 
 
-PKG_CFLAGS=@HDF5_CPPFLAGS@ \
+PKG_CFLAGS = @HDF5_CPPFLAGS@ \
 	   @GSL_CFLAGS@ \
 	   @GDAL_CFLAGS@ \
 	   -DDLLEXPORT -D__STDC_FORMAT_MACROS \
@@ -13,10 +13,8 @@ PKG_CFLAGS=@HDF5_CPPFLAGS@ \
 	   -I$(GEDIRAT_ROOT) -I$(HANCOCKTOOLS_ROOT) -I$(CMPFIT_ROOT) \
 	   -I${LIBCLIDAR_ROOT} -I. -include tools/functionWrappers.h
 
-PKG_LIBS=-Wl,--start-group @HDF5_LDFLAGS@ @HDF5_LIBS@\
-         @GSL_LIBS@ \
-         @GDAL_LDFLAGS@ -Wl,--end-group
-
+# Repeat libraries list to resolve circular dependencies
+PKG_LIBS = @PKG_LIBS@
 
 src = $(HANCOCKTOOLS_ROOT)/functionWrappers.c \
 	$(LIBCLIDAR_ROOT)/libLasProcess.c $(LIBCLIDAR_ROOT)/libLasRead.c \
