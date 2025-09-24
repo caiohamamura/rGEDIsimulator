@@ -2,7 +2,7 @@
 
 [![R-CMD-check](https://github.com/caiohamamura/rGEDIsimulator/actions/workflows/build.yaml/badge.svg?branch=main)](https://github.com/caiohamamura/rGEDIsimulator/actions/workflows/build.yaml)
 [![CRAN](https://www.r-pkg.org/badges/version/rGEDIsimulator)](https://cran.r-project.org/package=rGEDIsimulator)
-![Github](https://img.shields.io/badge/Github-0.2.3-green.svg)
+![Github](https://img.shields.io/badge/Github-0.3.0-green.svg)
 ![licence](https://img.shields.io/badge/Licence-GPL--3-blue.svg) 
 ![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/rGEDIsimulator)
 
@@ -177,7 +177,7 @@ Also don't forget to add relevant tags such as `gedi` and `rgedi`.
 
 # Citing rGEDIsimulator
 Hamamura,C.; Silva,C.A; Hancock,S.; Valbuena, R.; Cardil,A.; Broadbent, E. N.; Almeida,D.R.A.; Silva Junior, C.H.L; Klauberg, C. NASA's Global Ecosystem Dynamics Investigation (GEDI) Simulator for ALS Data.
-version 0.1.1, accessed on April. 04 2024, available at: <https://CRAN.R-project.org/package=rGEDIsimulator>
+version 0.3.0, accessed on April. 04 2024, available at: <https://CRAN.R-project.org/package=rGEDIsimulator>
 
 # Disclaimer
 **rGEDI package has not been developted by the GEDI team. It comes with no guarantee, expressed or implied, and the authors hold no responsibility for its use or reliability of its outputs.**
