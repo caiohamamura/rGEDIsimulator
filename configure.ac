@@ -3,6 +3,7 @@ m4_include([tools/m4/gsl.m4])
 m4_include([tools/m4/m4_ax_lib_gdal.m4])
 m4_include([tools/m4/zlib.m4])
 m4_include([tools/m4/ax_lib_hdf5.m4])
+m4_include([tools/m4/ax_lib_sz.m4])
 
 # The version set here will propagate to other files from here
 AC_INIT([gedisimulator],[0.2.3])
@@ -36,37 +37,7 @@ AX_LIB_GDAL2()
 ##################
 ## SZIP
 ##################
-# Detect SZIP / libaec
-AC_MSG_CHECKING([for SZIP / libaec library])
-
-case "$host_os" in
-  darwin*)
-    # Homebrew paths
-    echo "---------------------"
-    echo "-- We are in macOS --"
-    echo "---------------------"
-    if test -d "/opt/homebrew/opt/libaec"; then
-      LDFLAGS="-L/opt/homebrew/opt/libaec/lib $LDFLAGS"
-      CPPFLAGS="-I/opt/homebrew/opt/libaec/include $CPPFLAGS"
-    elif test -d "/usr/local/opt/libaec"; then
-      LDFLAGS="-L/usr/local/opt/libaec/lib $LDFLAGS"
-      CPPFLAGS="-I/usr/local/opt/libaec/include $CPPFLAGS"
-    fi
-    AC_CHECK_LIB([aec], [SZ_BufftoBuffCompress],
-                 [HAVE_LIBSZ="yes"
-                  AC_DEFINE([HAVE_LIBSZ], [1], [Define if SZIP/libaec is available])],
-                 [AC_MSG_ERROR([could not find SZIP (libaec) in Homebrew])])
-    ;;
-  *)
-    AC_CHECK_LIB([sz], [SZ_BufftoBuffCompress],
-                 [HAVE_LIBSZ="yes"
-                  AC_DEFINE([HAVE_LIBSZ], [1], [Define if SZIP/libaec is available])],
-                 [AC_MSG_ERROR([could not find SZIP (libaec):
-   Debian/Ubuntu: sudo apt install libaec-dev
-   RPM-based:    sudo dnf install libaec-devel
-   macOS:        brew install libaec])])
-    ;;
-esac
+AX_LIB_SZ()
 
    
 
