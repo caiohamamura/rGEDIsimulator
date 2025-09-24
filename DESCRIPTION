@@ -28,8 +28,9 @@ Imports:
   hdf5r,
   utils
 Suggests:
-  lidR,
-  plot3D
+    lidR,
+    plot3D,
+    testthat (>= 3.0.0)
 SystemRequirements: 
   GNU Scientific Library (>= 2.1),
   HDF5 (>= 1.8.13),
@@ -42,3 +43,4 @@ Roxygen: list(markdown = TRUE)
 BugReports: https://github.com/caiohamamura/rGEDIsimulator/issues
 URL: https://github.com/caiohamamura/rGEDIsimulator
 Copyright: inst/COPYRIGHTS
+Config/testthat/edition: 3
