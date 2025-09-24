@@ -13,7 +13,7 @@
  */
 
 /* Main mpfit library routines (double precision) 
-   $Id: mpfit.c,v 1.20 2010/11/13 08:15:35 craigm Exp $
+   $Id$
  */
 
 #include <stdio.h>
@@ -21,7 +21,6 @@
 #include <math.h>
 #include <string.h>
 #include "mpfit.h"
-#include "functionWrappers.h"
 
 /* Forward declarations of functions in this module */
 static int mp_fdjac2(mp_func funct,
@@ -30,7 +29,8 @@ static int mp_fdjac2(mp_func funct,
 	      double *wa, void *priv, int *nfev,
 	      double *step, double *dstep, int *dside,
 	      int *qulimited, double *ulimit,
-	      int *ddebug, double *ddrtol, double *ddatol);
+	      int *ddebug, double *ddrtol, double *ddatol,
+	      double *wa2, double **dvecptr);
 static void mp_qrfac(int m, int n, double *a, int lda, 
 	      int pivot, int *ipvt, int lipvt,
 	      double *rdiag, double *acnorm, double *wa);
@@ -50,14 +50,13 @@ static int mp_covar(int n, double *r, int ldr, int *ipvt, double tol, double *wa
 
 /* Macro to safely allocate memory */
 #define mp_malloc(dest,type,size) \
-  dest = (type *) malloc( sizeof(type)*size ); \
-  if (dest == 0) { \
-    info = MP_ERR_MEMORY; \
-    goto CLEANUP; \
-  } else { \
-    int _k; \
-    for (_k=0; _k<(size); _k++) dest[_k] = 0; \
-  } 
+  do { \
+    dest = (type *) calloc(size, sizeof(type)); \
+    if (!dest) { \
+      info = MP_ERR_MEMORY; \
+      goto CLEANUP; \
+    } \
+  } while(0)
 
 /*
 *     **********
@@ -275,7 +274,7 @@ int mpfit(mp_func funct, int m, int npar,
 {
   mp_config conf;
   int i, j, info, iflag, nfree, npegged, iter;
-  int qanylim = 0, qanypegged = 0;
+  int qanylim = 0;
 
   int ij,jj,l;
   double actred,delta,dirder,fnorm,fnorm1,gnorm, orignorm;
@@ -298,6 +297,7 @@ int mpfit(mp_func funct, int m, int npar,
   double *fvec = 0, *qtf = 0;
   double *x = 0, *xnew = 0, *fjac = 0, *diag = 0;
   double *wa1 = 0, *wa2 = 0, *wa3 = 0, *wa4 = 0;
+  double **dvecptr = 0;
   int *ipvt = 0;
 
   int ldfjac;
@@ -324,17 +324,19 @@ int mpfit(mp_func funct, int m, int npar,
     if (config->nprint >= 0) conf.nprint = config->nprint;
     if (config->epsfcn > 0) conf.epsfcn = config->epsfcn;
     if (config->maxiter > 0) conf.maxiter = config->maxiter;
+    if (config->maxiter == MP_NO_ITER) conf.maxiter = 0;
     if (config->douserscale != 0) conf.douserscale = config->douserscale;
     if (config->covtol > 0) conf.covtol = config->covtol;
     if (config->nofinitecheck > 0) conf.nofinitecheck = config->nofinitecheck;
     conf.maxfev = config->maxfev;
   }
 
-  info = 0;
+  info = MP_ERR_INPUT; /* = 0 */
   iflag = 0;
   nfree = 0;
   npegged = 0;
 
+  /* Basic error checking */
   if (funct == 0) {
     return MP_ERR_FUNC;
   }
@@ -439,10 +441,11 @@ int mpfit(mp_func funct, int m, int npar,
   ldfjac = m;
   mp_malloc(diag, double, npar);
   mp_malloc(wa1, double, npar);
-  mp_malloc(wa2, double, npar);
+  mp_malloc(wa2, double, m); /* Maximum usage is "m" in mpfit_fdjac2() */
   mp_malloc(wa3, double, npar);
   mp_malloc(wa4, double, m);
   mp_malloc(ipvt, int, npar);
+  mp_malloc(dvecptr, double *, npar);
 
   /* Evaluate user function with initial parameter values */
   iflag = mp_call(funct, m, npar, xall, fvec, 0, private_data);
@@ -484,30 +487,34 @@ int mpfit(mp_func funct, int m, int npar,
   iflag = mp_fdjac2(funct, m, nfree, ifree, npar, xnew, fvec, fjac, ldfjac,
 		    conf.epsfcn, wa4, private_data, &nfev,
 		    step, dstep, mpside, qulim, ulim,
-		    ddebug, ddrtol, ddatol);
+		    ddebug, ddrtol, ddatol, wa2, dvecptr);
   if (iflag < 0) {
     goto CLEANUP;
   }
 
   /* Determine if any of the parameters are pegged at the limits */
-  qanypegged = 0;
   if (qanylim) {
     for (j=0; j<nfree; j++) {
       int lpegged = (qllim[j] && (x[j] == llim[j]));
       int upegged = (qulim[j] && (x[j] == ulim[j]));
       sum = 0;
-      
+
+      /* If the parameter is pegged at a limit, compute the gradient
+	 direction */
       if (lpegged || upegged) {
-	qanypegged = 1;
 	ij = j*ldfjac;
 	for (i=0; i<m; i++, ij++) {
 	  sum += fvec[i] * fjac[ij];
 	}
       }
+      /* If pegged at lower limit and gradient is toward negative then
+	 reset gradient to zero */
       if (lpegged && (sum > 0)) {
 	ij = j*ldfjac;
 	for (i=0; i<m; i++, ij++) fjac[ij] = 0;
       }
+      /* If pegged at upper limit and gradient is toward positive then
+	 reset gradient to zero */
       if (upegged && (sum < 0)) {
 	ij = j*ldfjac;
 	for (i=0; i<m; i++, ij++) fjac[ij] = 0;
@@ -625,7 +632,10 @@ int mpfit(mp_func funct, int m, int npar,
    */
   if (gnorm <= conf.gtol) info = MP_OK_DIR;
   if (info != 0) goto L300;
-  if (conf.maxiter == 0) goto L300;
+  if (conf.maxiter == 0) {
+    info = MP_MAXITER;
+    goto L300;
+  }
 
   /*
    *	 rescale if necessary.
@@ -966,7 +976,7 @@ int mpfit(mp_func funct, int m, int npar,
   if (qulim) free(qulim);
   if (llim)  free(llim);
   if (ulim)  free(ulim);
-
+  if (dvecptr) free(dvecptr);
 
   return info;
 }
@@ -981,7 +991,8 @@ int mp_fdjac2(mp_func funct,
 	      double *wa, void *priv, int *nfev,
 	      double *step, double *dstep, int *dside,
 	      int *qulimited, double *ulimit,
-	      int *ddebug, double *ddrtol, double *ddatol)
+	      int *ddebug, double *ddrtol, double *ddatol,
+	      double *wa2, double **dvec)
 {
 /*
 *     **********
@@ -1064,17 +1075,15 @@ int mp_fdjac2(mp_func funct,
   int iflag = 0;
   double eps,h,temp;
   static double zero = 0.0;
-  double **dvec = 0;
   int has_analytical_deriv = 0, has_numerical_deriv = 0;
   int has_debug_deriv = 0;
   
   temp = mp_dmax1(epsfcn,MP_MACHEP0);
   eps = sqrt(temp);
   ij = 0;
-  ldfjac = 0; /* Prevents compiler warning */
+  ldfjac = 0;   /* Prevent compiler warning */
+  if (ldfjac){} /* Prevent compiler warning */
 
-  dvec = (double **) malloc(sizeof(double **)*npar);
-  if (dvec == 0) return MP_ERR_MEMORY;
   for (j=0; j<npar; j++) dvec[j] = 0;
 
   /* Initialize the Jacobian derivative matrix */
@@ -1107,8 +1116,8 @@ int mp_fdjac2(mp_func funct,
   }
 
   if (has_debug_deriv) {
-    msgf("FJAC DEBUG BEGIN\n");
-    msgf("#  %10s %10s %10s %10s %10s %10s\n", 
+    printf("FJAC DEBUG BEGIN\n");
+    printf("#  %10s %10s %10s %10s %10s %10s\n", 
 	   "IPNT", "FUNC", "DERIV_U", "DERIV_N", "DIFF_ABS", "DIFF_REL");
   }
 
@@ -1120,11 +1129,14 @@ int mp_fdjac2(mp_func funct,
     
     /* Check for debugging */
     if (debug) {
-      msgf("FJAC PARM %d\n", ifree[j]);
+      printf("FJAC PARM %d\n", ifree[j]);
     }
 
     /* Skip parameters already done by user-computed partials */
-    if (dside && dsidei == 3) continue;
+    if (dside && dsidei == 3) {
+      ij += m; /* still need to advance fjac pointer */
+      continue;
+    }
 
     temp = x[ifree[j]];
     h = eps * fabs(temp);
@@ -1160,17 +1172,17 @@ int mp_fdjac2(mp_func funct,
 	  fjac[ij] = (wa[i] - fvec[i])/h; /* fjac[i+m*j] */
 	  if ((da == 0 && dr == 0 && (fjold != 0 || fjac[ij] != 0)) ||
 	      ((da != 0 || dr != 0) && (fabs(fjold-fjac[ij]) > da + fabs(fjold)*dr))) {
-	    msgf("   %10d %10.4g %10.4g %10.4g %10.4g %10.4g\n", 
+	    printf("   %10d %10.4g %10.4g %10.4g %10.4g %10.4g\n", 
 		   i, fvec[i], fjold, fjac[ij], fjold-fjac[ij], 
 		   (fjold == 0)?(0):((fjold-fjac[ij])/fjold));
 	  }
 	}
-      }
+      } /* end debugging */
 
-    } else {
+    } else {  /* dside > 2 */
       /* COMPUTE THE TWO-SIDED DERIVATIVE */
-      for (i=0; i<m; i++, ij++) {
-	fjac[ij] = wa[i];    /* Store temp data: fjac[i+m*j] */
+      for (i=0; i<m; i++) {
+	wa2[i] = wa[i];
       }
 
       /* Evaluate at x - h */
@@ -1181,33 +1193,33 @@ int mp_fdjac2(mp_func funct,
       x[ifree[j]] = temp;
 
       /* Now compute derivative as (f(x+h) - f(x-h))/(2h) */
-      ij -= m;
       if (! debug ) {
+	/* Non-debug path for speed */
 	for (i=0; i<m; i++, ij++) {
-	  fjac[ij] = (fjac[ij] - wa[i])/(2*h); /* fjac[i+m*j] */
+	  fjac[ij] = (wa2[ij] - wa[i])/(2*h); /* fjac[i+m*j] */
 	}
       } else {
+	/* Debug path for correctness */
 	for (i=0; i<m; i++, ij++) {
 	  double fjold = fjac[ij];
-	  fjac[ij] = (fjac[ij] - wa[i])/(2*h); /* fjac[i+m*j] */
+	  fjac[ij] = (wa2[i] - wa[i])/(2*h); /* fjac[i+m*j] */
 	  if ((da == 0 && dr == 0 && (fjold != 0 || fjac[ij] != 0)) ||
 	      ((da != 0 || dr != 0) && (fabs(fjold-fjac[ij]) > da + fabs(fjold)*dr))) {
-	    msgf("   %10d %10.4g %10.4g %10.4g %10.4g %10.4g\n", 
+	    printf("   %10d %10.4g %10.4g %10.4g %10.4g %10.4g\n", 
 		   i, fvec[i], fjold, fjac[ij], fjold-fjac[ij], 
 		   (fjold == 0)?(0):((fjold-fjac[ij])/fjold));
 	  }
 	}
-      }	
+      } /* end debugging */
       
-    }
-  }
+    } /* if (dside > 2) */
+  } /* if (has_numerical_derivative) */
 
   if (has_debug_deriv) {
-    msgf("FJAC DEBUG END\n");
+    printf("FJAC DEBUG END\n");
   }
 
  DONE:
-  if (dvec) free(dvec);
   if (iflag < 0) return iflag;
   return 0; 
   /*
@@ -1306,8 +1318,10 @@ void mp_qrfac(int m, int n, double *a, int lda,
   static double one = 1.0;
   static double p05 = 0.05;
 
-  lda = 0;   /* Prevent compiler warning */
-  lipvt = 0; /* Prevent compiler warning */
+  lda = 0;      /* Prevent compiler warning */
+  lipvt = 0;    /* Prevent compiler warning */
+  if (lda) {}   /* Prevent compiler warning */
+  if (lipvt) {} /* Prevent compiler warning */
 
   /*
    *     compute the initial column norms and initialize several arrays.
@@ -2198,9 +2212,9 @@ int mp_covar(int n, double *r, int ldr, int *ipvt, double tol, double *wa)
 #if 0
   for (j=0; j<n; j++) {
     for (i=0; i<n; i++) {
-      msgf("%f ", r[j*ldr+i]);
+      printf("%f ", r[j*ldr+i]);
     }
-    msgf("\n");
+    printf("\n");
   }
 #endif
 
@@ -2283,9 +2297,9 @@ int mp_covar(int n, double *r, int ldr, int *ipvt, double tol, double *wa)
 #if 0
   for (j=0; j<n; j++) {
     for (i=0; i<n; i++) {
-      msgf("%f ", r[j*ldr+i]);
+      printf("%f ", r[j*ldr+i]);
     }
-    msgf("\n");
+    printf("\n");
   }
 #endif
 

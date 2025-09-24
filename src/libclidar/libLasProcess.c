@@ -53,7 +53,6 @@ smoothPulse smooPulse;   /*global structure to save reallocation*/
 
 float *processWave(unsigned char *wave,int waveLen,denPar *decon,float gbic)
 {
-  float status = 0;
   int i=0;
   float *temp=NULL,*processed=NULL;
   float *processFloWave(float *,int,denPar *,float);

@@ -5431,17 +5431,80 @@ printf "%s\n" "$as_me: WARNING: GDAL $GDAL_VERSION found, but required version i
 ##################
 ## SZIP
 ##################
-if test "x$host_os" = "xdarwin"*; then
-  if test -d "/usr/local/opt/libaec"; then
-    LDFLAGS="-L/usr/local/opt/libaec/lib $LDFLAGS"
-    CPPFLAGS="-I/usr/local/opt/libaec/include $CPPFLAGS"
-  elif test -d "/opt/homebrew/opt/libaec"; then
-    LDFLAGS="-L/opt/homebrew/opt/libaec/lib $LDFLAGS"
-    CPPFLAGS="-I/opt/homebrew/opt/libaec/include $CPPFLAGS"
-  fi
+# Detect SZIP / libaec
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for SZIP / libaec library" >&5
+printf %s "checking for SZIP / libaec library... " >&6; }
+
+case "$host_os" in
+  darwin*)
+    # Homebrew paths
+    echo "---------------------"
+    echo "-- We are in macOS --"
+    echo "---------------------"
+    if test -d "/opt/homebrew/opt/libaec"; then
+      LDFLAGS="-L/opt/homebrew/opt/libaec/lib $LDFLAGS"
+      CPPFLAGS="-I/opt/homebrew/opt/libaec/include $CPPFLAGS"
+    elif test -d "/usr/local/opt/libaec"; then
+      LDFLAGS="-L/usr/local/opt/libaec/lib $LDFLAGS"
+      CPPFLAGS="-I/usr/local/opt/libaec/include $CPPFLAGS"
+    fi
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for SZ_BufftoBuffCompress in -laec" >&5
+printf %s "checking for SZ_BufftoBuffCompress in -laec... " >&6; }
+if test ${ac_cv_lib_aec_SZ_BufftoBuffCompress+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) ac_check_lib_save_LIBS=$LIBS
+LIBS="-laec  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.
+   The 'extern "C"' is for builds by C++ compilers;
+   although this is not generally supported in C code supporting it here
+   has little cost and some practical benefit (sr 110532).  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char SZ_BufftoBuffCompress (void);
+int
+main (void)
+{
+return SZ_BufftoBuffCompress ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_aec_SZ_BufftoBuffCompress=yes
+else case e in #(
+  e) ac_cv_lib_aec_SZ_BufftoBuffCompress=no ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS ;;
+esac
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_aec_SZ_BufftoBuffCompress" >&5
+printf "%s\n" "$ac_cv_lib_aec_SZ_BufftoBuffCompress" >&6; }
+if test "x$ac_cv_lib_aec_SZ_BufftoBuffCompress" = xyes
+then :
+  HAVE_LIBSZ="yes"
+
+printf "%s\n" "#define HAVE_LIBSZ 1" >>confdefs.h
+
+else case e in #(
+  e) as_fn_error $? "could not find SZIP (libaec) in Homebrew" "$LINENO" 5 ;;
+esac
 fi
 
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for SZ_BufftoBuffCompress in -lsz" >&5
+    ;;
+  *)
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for SZ_BufftoBuffCompress in -lsz" >&5
 printf %s "checking for SZ_BufftoBuffCompress in -lsz... " >&6; }
 if test ${ac_cv_lib_sz_SZ_BufftoBuffCompress+y}
 then :
@@ -5492,11 +5555,15 @@ printf "%s\n" "#define HAVE_LIBSZ 1" >>confdefs.h
 
 else case e in #(
   e) as_fn_error $? "could not find SZIP (libaec):
-    Debian/Ubuntu: sudo apt install libaec-dev
-    RPM-based:    sudo dnf install libaec-devel
-    macOS:        brew install libaec" "$LINENO" 5 ;;
+   Debian/Ubuntu: sudo apt install libaec-dev
+   RPM-based:    sudo dnf install libaec-devel
+   macOS:        brew install libaec" "$LINENO" 5 ;;
 esac
 fi
+
+    ;;
+esac
+
 
 
 ##################

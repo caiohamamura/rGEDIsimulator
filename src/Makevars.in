@@ -2,7 +2,7 @@
 HANCOCKTOOLS_ROOT = tools
 GEDIRAT_ROOT = gedisimulator
 LIBCLIDAR_ROOT = libclidar
-CMPFIT_ROOT = cmpfit-1.2
+CMPFIT_ROOT = cmpfit-1.5
 
 
 PKG_CFLAGS=@HDF5_CPPFLAGS@ \
